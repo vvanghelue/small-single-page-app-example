@@ -8,7 +8,7 @@ const homeComponent = () => {
         You can access the user list here : <a href="#/users">user list</a>
       </p>
       <p>
-         You can access contact page <b style="cursor: pointer; color: blue;" onclick="goToPage('/contact')">programatically</b> or via <a href="#/contact">href routing</a>
+         You can access contact page <b style="cursor: pointer; color: blue;" onclick="location.hash = '/contact'">programatically</b> or via <a href="#/contact">href routing</a>
       </p>
     </div>
   `)
