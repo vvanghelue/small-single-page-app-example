@@ -1,4 +1,3 @@
-import test from './test.js'
 import createDomElement from './lib/create-dom-element.js'
 import homeComponent from './pages/home/home.js'
 import userListComponent from './pages/users/list/users-list.js'
@@ -75,9 +74,9 @@ const renderPage = (route, params) => {
 			<div class="app-header">
 				<div class="app-header-name">Foo App</div>
 				<div class="app-header-menu">
-					<a href="#/">home</a>
-					<a href="#/users">users</a>
-					<a href="#/contact">contact</a>
+					<a href="#/">Home</a>
+					<a href="#/users">Users</a>
+					<a href="#/contact">Contact</a>
 				</div>
 			</div>
 			<div class="app-content">
