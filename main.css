@@ -1,3 +1,5 @@
+@import url("pages/home/home.css");
+
 body {
 	padding: 0;
 	margin: 0;
@@ -30,12 +32,4 @@ a {
 }
 .app-content {
   padding: 10px;
-}
-
-
-/*
-  Components
-*/
-.home-page {
-  /*text-align: center;*/
 }
