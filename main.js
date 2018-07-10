@@ -1,24 +1,39 @@
-const createDomElement = function (html, onCreated) {
-  const element = new DOMParser().parseFromString(html, "text/html").body.firstChild
+const createDomElement = function(html, onCreated) {
+    const element = new DOMParser().parseFromString(html, "text/html").body.firstChild
 
-  if (onCreated) {
-    onCreated(element)
-  }
+    if (onCreated) {
+        onCreated(element)
+    }
 
-  return element
+    return element
 }
 
 /* data */
-const users = [
-  { id: 1, name: 'Jean', phone: '+33644444444' },
-  { id: 2, name: 'Steeve', phone: '+33555555555' },
-  { id: 3, name: 'John', phone: '+33333333333' },
-  { id: 4, name: 'Mark', phone: '+33777777777' },
+const users = [{
+        id: 1,
+        name: 'Jean',
+        phone: '+33644444444'
+    },
+    {
+        id: 2,
+        name: 'Steeve',
+        phone: '+33555555555'
+    },
+    {
+        id: 3,
+        name: 'John',
+        phone: '+33333333333'
+    },
+    {
+        id: 4,
+        name: 'Mark',
+        phone: '+33777777777'
+    },
 ]
 
 /* Components */
 const homeComponent = () => {
-  const element = createDomElement(`
+    const element = createDomElement(`
     <div class="home-page">
       <h1>Welcome to Foo App 🏄‍♂️</h1>
       <p>
@@ -29,12 +44,12 @@ const homeComponent = () => {
       </p>
     </div>
   `)
-  return element
+    return element
 }
 
 const userListComponent = () => {
-  
-  const element = createDomElement(`
+
+    const element = createDomElement(`
     <div class="home-page">
       <h1>User List</h1>
       <ul>
@@ -42,14 +57,14 @@ const userListComponent = () => {
       </ul>
     </div>
   `)
-  return element
+    return element
 }
 
 const userDetailsComponent = (userId) => {
-  
-  const user = users.find(u => u.id == userId) 
-  
-  const element = createDomElement(`
+
+    const user = users.find(u => u.id == userId)
+
+    const element = createDomElement(`
     <div class="home-page">
       <a href="#/users">< Go back</a>
       <h1>About ${user.name}</h1>
@@ -58,11 +73,11 @@ const userDetailsComponent = (userId) => {
       </p>
     </div>
   `)
-  return element
+    return element
 }
 
 const contactComponent = (userId) => {
-  const element = createDomElement(`
+    const element = createDomElement(`
     <div class="home-page">
       <h1>Contact</h1>
       <p>
@@ -70,55 +85,54 @@ const contactComponent = (userId) => {
       </p>
     </div>
   `)
-  return element
+    return element
 }
 
 (() => {
 
-	let currentRoute
+    let currentRoute
 
-	const routes = [
-		{
-			paths: [/\/$/],
-			component: homeComponent
-		},
-		{
-			paths: [/\/users$/],
-			component: userListComponent
-		},
-		{
-			paths: [/\/users\/(.+)$/],
-			component: userDetailsComponent
-		},
-		{
-			paths: [/\/contact$/],
-			component: contactComponent
-		}
-	]
+    const routes = [{
+            paths: [/\/$/],
+            component: homeComponent
+        },
+        {
+            paths: [/\/users$/],
+            component: userListComponent
+        },
+        {
+            paths: [/\/users\/(.+)$/],
+            component: userDetailsComponent
+        },
+        {
+            paths: [/\/contact$/],
+            component: contactComponent
+        }
+    ]
 
-	const goToPage = window.goToPage = (path) => {
+    const goToPage = window.goToPage = (path) => {
 
-		if (path.endsWith('/')) path = path.slice(0, -1)
+        if (path.endsWith('/')) path = path.slice(0, -1)
 
-		if (path == '') path = '/'
+        if (path == '') path = '/'
 
-		for (route of routes) {
-			for (registeredPath of route.paths) {	
-				const matches = path.match(registeredPath)
-				if (matches) {
-					const params = matches.slice(1, matches.length)
-					// console.log(`Route matched : ${route.title}`)
-					renderPage(route, params)
-					return
-				}
-			}
-		}
+        for (route of routes) {
+            for (registeredPath of route.paths) {
+                const matches = path.match(registeredPath)
+                if (matches) {
+                    const params = matches.slice(1, matches.length)
+                    // console.log(`Route matched : ${route.title}`)
+                    renderPage(route, params)
+                    return
+                }
+            }
+        }
 
-		throw new Error(`given path "${path}" did not match any route`)
-	}
+        throw new Error(`given path "${path}" did not match any route`)
+    }
 
-	const renderPage = (route, params) => {
-		const rootElement = createDomElement(`
+    const renderPage = (route, params) => {
+        const rootElement = createDomElement(`
 			<div>
 				<div class="app-header">
 					<div class="app-header-name">Foo App</div>
@@ -137,22 +151,22 @@ const contactComponent = (userId) => {
 			</div>
 		`)
 
-		const componentElement = route.component.apply({}, params)
-		rootElement.querySelector('.app-content').appendChild(componentElement)
+        const componentElement = route.component.apply({}, params)
+        rootElement.querySelector('.app-content').appendChild(componentElement)
 
-		document.querySelector('.app-root').innerHTML = ''
-		document.querySelector('.app-root').appendChild(rootElement)
-	}
+        document.querySelector('.app-root').innerHTML = ''
+        document.querySelector('.app-root').appendChild(rootElement)
+    }
 
-	window.addEventListener('hashchange', (e) => {
-		goToPage(
-			location.hash.replace(/#/, '')
-		)
-	})
+    window.addEventListener('hashchange', (e) => {
+        goToPage(
+            location.hash.replace(/#/, '')
+        )
+    })
 
-	document.addEventListener('DOMContentLoaded', (e) => {
-		goToPage(
-			location.hash.replace(/#/, '')
-		)
-	})
+    document.addEventListener('DOMContentLoaded', (e) => {
+        goToPage(
+            location.hash.replace(/#/, '')
+        )
+    })
 })()
