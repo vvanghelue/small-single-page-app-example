@@ -1,0 +1,41 @@
+body {
+	padding: 0;
+	margin: 0;
+	font-family: 'Helvetica Neue';
+}
+
+a {
+  text-decoration: none;
+}
+
+.app-header {
+  background: #7e50ef;
+  padding: 20px;
+  color: #fff;
+}
+.app-header-name {
+  font-weight: bold;
+  display: inline-block;
+}
+.app-header-menu {
+  display: inline-block;
+  padding-left: 20px;
+}
+.app-header-menu a {
+  color: #fff;
+  padding-left: 10px;
+}
+.app-header-menu a:hover {
+  text-decoration: underline;
+}
+.app-content {
+  padding: 10px;
+}
+
+
+/*
+  Components
+*/
+.home-page {
+  /*text-align: center;*/
+}
