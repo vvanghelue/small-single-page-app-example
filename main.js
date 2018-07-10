@@ -1,15 +1,12 @@
-const createDomElement = function(html, onCreated) {
-    const element = new DOMParser().parseFromString(html, "text/html").body.firstChild
-
-    if (onCreated) {
-        onCreated(element)
-    }
-
-    return element
-}
+import test from './test.js'
+import createDomElement from './lib/create-dom-element.js'
+import homeComponent from './pages/home/home.js'
+import userListComponent from './pages/users/list/users-list.js'
+import userDetailsComponent from './pages/users/details/user-details.js'
+import contactComponent from './pages/contact/contact.js'
 
 /* data */
-const users = [{
+window.users = [{
         id: 1,
         name: 'Jean',
         phone: '+33644444444'
@@ -28,145 +25,85 @@ const users = [{
         id: 4,
         name: 'Mark',
         phone: '+33777777777'
-    },
+    }
 ]
 
-/* Components */
-const homeComponent = () => {
-    const element = createDomElement(`
-    <div class="home-page">
-      <h1>Welcome to Foo App 🏄‍♂️</h1>
-      <p>
-        You can access the user list here : <a href="#/users">user list</a>
-      </p>
-      <p>
-         You can access contact page <b style="cursor: pointer; color: blue;" onclick="goToPage('/contact')">programatically</b> or via <a href="#/contact">href routing</a>
-      </p>
-    </div>
-  `)
-    return element
-}
+let currentRoute
 
-const userListComponent = () => {
+const routes = [{
+        paths: [/\/$/],
+        component: homeComponent
+    },
+    {
+        paths: [/\/users$/],
+        component: userListComponent
+    },
+    {
+        paths: [/\/users\/(.+)$/],
+        component: userDetailsComponent
+    },
+    {
+        paths: [/\/contact$/],
+        component: contactComponent
+    }
+]
 
-    const element = createDomElement(`
-    <div class="home-page">
-      <h1>User List</h1>
-      <ul>
-         ${users.map(u => `<li><a href="#/users/${u.id}">${u.name}</a></li>`).join('')}
-      </ul>
-    </div>
-  `)
-    return element
-}
+const goToPage = window.goToPage = (path) => {
 
-const userDetailsComponent = (userId) => {
+    if (path.endsWith('/')) path = path.slice(0, -1)
 
-    const user = users.find(u => u.id == userId)
+    if (path == '') path = '/'
 
-    const element = createDomElement(`
-    <div class="home-page">
-      <a href="#/users">< Go back</a>
-      <h1>About ${user.name}</h1>
-      <p>
-        Phone number : ${user.phone}
-      </p>
-    </div>
-  `)
-    return element
-}
-
-const contactComponent = (userId) => {
-    const element = createDomElement(`
-    <div class="home-page">
-      <h1>Contact</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-      </p>
-    </div>
-  `)
-    return element
-}
-
-(() => {
-
-    let currentRoute
-
-    const routes = [{
-            paths: [/\/$/],
-            component: homeComponent
-        },
-        {
-            paths: [/\/users$/],
-            component: userListComponent
-        },
-        {
-            paths: [/\/users\/(.+)$/],
-            component: userDetailsComponent
-        },
-        {
-            paths: [/\/contact$/],
-            component: contactComponent
-        }
-    ]
-
-    const goToPage = window.goToPage = (path) => {
-
-        if (path.endsWith('/')) path = path.slice(0, -1)
-
-        if (path == '') path = '/'
-
-        for (route of routes) {
-            for (registeredPath of route.paths) {
-                const matches = path.match(registeredPath)
-                if (matches) {
-                    const params = matches.slice(1, matches.length)
-                    // console.log(`Route matched : ${route.title}`)
-                    renderPage(route, params)
-                    return
-                }
+    for (const route of routes) {
+        for (const registeredPath of route.paths) {
+            const matches = path.match(registeredPath)
+            if (matches) {
+                const params = matches.slice(1, matches.length)
+                // console.log(`Route matched : ${route.title}`)
+                renderPage(route, params)
+                return
             }
         }
-
-        throw new Error(`given path "${path}" did not match any route`)
     }
 
-    const renderPage = (route, params) => {
-        const rootElement = createDomElement(`
-			<div>
-				<div class="app-header">
-					<div class="app-header-name">Foo App</div>
-					<div class="app-header-menu">
-						<a href="#/">home</a>
-						<a href="#/users">users</a>
-						<a href="#/contact">contact</a>
-					</div>
-				</div>
-				<div class="app-content">
+    throw new Error(`given path "${path}" did not match any route`)
+}
 
-				</div>
-				<div class="app-footer">
-          
+const renderPage = (route, params) => {
+    const rootElement = createDomElement(`
+		<div>
+			<div class="app-header">
+				<div class="app-header-name">Foo App</div>
+				<div class="app-header-menu">
+					<a href="#/">home</a>
+					<a href="#/users">users</a>
+					<a href="#/contact">contact</a>
 				</div>
 			</div>
-		`)
+			<div class="app-content">
 
-        const componentElement = route.component.apply({}, params)
-        rootElement.querySelector('.app-content').appendChild(componentElement)
+			</div>
+			<div class="app-footer">
+      
+			</div>
+		</div>
+	`)
 
-        document.querySelector('.app-root').innerHTML = ''
-        document.querySelector('.app-root').appendChild(rootElement)
-    }
+    const componentElement = route.component.apply({}, params)
+    rootElement.querySelector('.app-content').appendChild(componentElement)
 
-    window.addEventListener('hashchange', (e) => {
-        goToPage(
-            location.hash.replace(/#/, '')
-        )
-    })
+    document.querySelector('.app-root').innerHTML = ''
+    document.querySelector('.app-root').appendChild(rootElement)
+}
 
-    document.addEventListener('DOMContentLoaded', (e) => {
-        goToPage(
-            location.hash.replace(/#/, '')
-        )
-    })
-})()
+window.addEventListener('hashchange', (e) => {
+    goToPage(
+        location.hash.replace(/#/, '')
+    )
+})
+
+document.addEventListener('DOMContentLoaded', (e) => {
+    goToPage(
+        location.hash.replace(/#/, '')
+    )
+})
