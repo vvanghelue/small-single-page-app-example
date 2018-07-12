@@ -100,8 +100,8 @@ window.addEventListener('hashchange', (e) => {
     )
 })
 
-document.addEventListener('DOMContentLoaded', (e) => {
+// document.addEventListener('DOMContentLoaded', (e) => {
     goToRoute(
         location.hash.replace(/#/, '')
     )
-})
+// })

@@ -7,7 +7,6 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server . -p 7676"
   },
   "repository": {
@@ -20,7 +19,8 @@
     "url": "https://github.com/vvanghelue/vanilla-single-page-app-example/issues"
   },
   "homepage": "https://github.com/vvanghelue/vanilla-single-page-app-example#readme",
-  "dependencies": {
-    "http-server": "^0.11.1"
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "latest"
   }
 }

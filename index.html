@@ -3,9 +3,52 @@
 <head>
 	<title>Small Simple Page App example</title>
 	<link rel="stylesheet" type="text/css" href="main.css">
-	<script type="module" src="main.js"></script>
 </head>
 <body>
 	<div class="app-root"></div>
+
+	<script type="text/javascript">
+		(function () {
+			var isOld = false
+
+			if (typeof fetch !== 'function') {
+				isOld = true
+				return
+			}
+
+			if (typeof fetch !== 'function') {
+				try {
+					eval('async () => {}')
+				} catch (e) {
+					isOld = true	
+				}
+				return
+			}
+
+			if (isOld) {
+				document.write(
+				'<script type="text/javascript">\n' +
+					"document.body.style.paddingTop = '100px';\n" +
+					"document.body.style.textAlign = 'center';\n" +
+					"document.body.style.fontSize = '20px';\n" +
+					'document.body.innerHTML = \'Your browser is too old, please update <a href="http://outdatedbrowser.com/fr">HERE</a>\';\n' + 
+				'<\/script>')
+				return
+			}
+
+			document.write(
+			'<script type="text/javascript" nomodule>\n' +
+				"document.body.style.paddingTop = '100px';\n" +
+				"document.body.style.textAlign = 'center';\n" +
+				"document.body.style.fontSize = '20px';\n" +
+				'document.body.innerHTML = \'Your browser is too old, please update <a href="http://outdatedbrowser.com/fr">HERE</a>\';\n' + 
+			'<\/script>')
+
+			var script = document.createElement('script')
+			script.type = "module"
+			script.src = "/main.js"
+			document.body.appendChild(script)
+		})()
+	</script>
 </body>
 </html>
