@@ -47,7 +47,7 @@ const routes = [{
     }
 ]
 
-const goToPage = window.goToPage = (path) => {
+const goToRoute = (path) => {
 
     if (path.endsWith('/')) path = path.slice(0, -1)
 
@@ -58,7 +58,6 @@ const goToPage = window.goToPage = (path) => {
             const matches = path.match(registeredPath)
             if (matches) {
                 const params = matches.slice(1, matches.length)
-                // console.log(`Route matched : ${route.title}`)
                 renderPage(route, params)
                 return
             }
@@ -96,13 +95,13 @@ const renderPage = (route, params) => {
 }
 
 window.addEventListener('hashchange', (e) => {
-    goToPage(
+    goToRoute(
         location.hash.replace(/#/, '')
     )
 })
 
 document.addEventListener('DOMContentLoaded', (e) => {
-    goToPage(
+    goToRoute(
         location.hash.replace(/#/, '')
     )
 })

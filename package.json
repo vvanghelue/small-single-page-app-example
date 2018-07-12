@@ -1,0 +1,26 @@
+{
+  "name": "small-single-page-app-example",
+  "version": "1.0.0",
+  "description": "https://small-single-page-app-example.surge.sh",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server . -p 7676"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vvanghelue/vanilla-single-page-app-example.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vvanghelue/vanilla-single-page-app-example/issues"
+  },
+  "homepage": "https://github.com/vvanghelue/vanilla-single-page-app-example#readme",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
